@@ -1,0 +1,22 @@
+[package]
+name = "ironrdp-mayhem-kat"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+# Own workspace root (see the analogous zeekstd/cel-rust integrations): keeps this additive crate
+# out of the upstream root Cargo.toml's `members = ["crates/*", "benches", "xtask", "ffi"]` list,
+# which we never edit. Without this, cargo would walk up from mayhem/kat/, find the root workspace,
+# and fail because this package isn't a declared member.
+[workspace]
+
+[[bin]]
+name = "kat"
+path = "src/main.rs"
+
+[dependencies]
+ironrdp-core = { path = "../../crates/ironrdp-core" }
+ironrdp-pdu = { path = "../../crates/ironrdp-pdu" }
+ironrdp-graphics = { path = "../../crates/ironrdp-graphics" }
+ironrdp-bulk = { path = "../../crates/ironrdp-bulk" }
+ironrdp-cliprdr-format = { path = "../../crates/ironrdp-cliprdr-format" }

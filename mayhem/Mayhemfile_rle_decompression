@@ -1,0 +1,13 @@
+project: savantenvs/ironrdp
+target: rle_decompression
+# The RLE bitmap decompressor (8/15/16/24 bpp), driven by upstream's `arbitrary`-derived
+# BitmapInput{ src: &[u8], width: u8, height: u8 } rather than raw bytes: libfuzzer-sys decodes the
+# raw fuzzer bytes into that struct via the `Arbitrary` trait before the harness ever sees them. A
+# raw-byte "seed" file would just be the Arbitrary wire encoding of the struct, not meaningful
+# src/width/height values, so per docs/seed-corpus.md / the net-new worker brief §"seeds" we ship
+# NO local seeds here rather than fake ones — the accumulated server corpus is still used.
+testsuite:
+  - https://$MAYHEM_DOMAIN/$MAYHEM_PROJECT/$MAYHEM_TARGET/testsuite.tar
+cmds:
+  - cmd: /mayhem/rle_decompression
+    libfuzzer: true

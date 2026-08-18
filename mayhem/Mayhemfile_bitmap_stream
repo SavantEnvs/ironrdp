@@ -1,0 +1,10 @@
+project: savantenvs/ironrdp
+target: bitmap_stream
+# The RDP6 bitmap-stream encoder + decoder, driven by upstream's `arbitrary`-derived
+# BitmapInput{ src: &[u8], width: u8, height: u8 } rather than raw bytes (same generator as
+# rle_decompression; see that Mayhemfile's comment for why no local seeds are wired here).
+testsuite:
+  - https://$MAYHEM_DOMAIN/$MAYHEM_PROJECT/$MAYHEM_TARGET/testsuite.tar
+cmds:
+  - cmd: /mayhem/bitmap_stream
+    libfuzzer: true

@@ -1,0 +1,13 @@
+project: savantenvs/ironrdp
+target: bulk_ncrush
+# The NCRUSH (RDP 6.0) bulk-decompression codec (MS-RDPEGDI). Seeds: a real NCRUSH-compressed
+# buffer, generated with the crate's OWN `BulkCompressor::compress` (CompressionType::Rdp6) and
+# verified to round-trip byte-for-byte before being committed — a format-gated LZ-style
+# decompressor needs a genuinely valid compressed stream to get past the header, not just any
+# bytes — plus upstream's own empty-input fuzz-regression fixture.
+testsuite:
+  - https://$MAYHEM_DOMAIN/$MAYHEM_PROJECT/$MAYHEM_TARGET/testsuite.tar
+  - file://mayhem/bulk_ncrush/testsuite
+cmds:
+  - cmd: /mayhem/bulk_ncrush
+    libfuzzer: true

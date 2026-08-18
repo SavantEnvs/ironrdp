@@ -1,0 +1,13 @@
+project: savantenvs/ironrdp
+target: cliprdr_format
+# Clipboard format conversion: the raw input is tried as PNG->CF_DIB, PNG->CF_DIBV5, CF_DIB->PNG,
+# CF_DIBV5->PNG, and CF_HTML<->plain HTML in turn. Seeds: upstream's own fuzz-regression
+# crash/minimized fixtures for this exact target, PLUS real CF_DIB/CF_DIBV5/CF_HTML clipboard
+# fixtures from crates/ironrdp-testsuite-core/test_data/pdu/clipboard/ (format-valid real data, so
+# the DIB/HTML branches aren't fuzzing from zero).
+testsuite:
+  - https://$MAYHEM_DOMAIN/$MAYHEM_PROJECT/$MAYHEM_TARGET/testsuite.tar
+  - file://mayhem/cliprdr_format/testsuite
+cmds:
+  - cmd: /mayhem/cliprdr_format
+    libfuzzer: true

@@ -1,0 +1,15 @@
+project: savantenvs/ironrdp
+target: pdu_round_trip
+# decode -> encode -> re-decode across ~30 core RDP PDU types (connection sequence, GCC,
+# licensing, fast-path, surface commands, cliprdr, rdpdr, rdpsnd, autodetect, input). Raw fuzzer
+# bytes are tried against every PDU type in turn, so seeds are real wire-format fragments rather
+# than crafted-for-one-type inputs. Seeds: the crate's own upstream-committed fuzz-regression
+# fixtures for this target AND its sibling `pdu_decode` target (same decode surface, same PDU type
+# list — see crates/ironrdp-testsuite-core/test_data/fuzz_regression/{pdu_round_trip,pdu_decode}/),
+# asserted by upstream's own `fuzz_regression` test suite to no longer crash.
+testsuite:
+  - https://$MAYHEM_DOMAIN/$MAYHEM_PROJECT/$MAYHEM_TARGET/testsuite.tar
+  - file://mayhem/pdu_round_trip/testsuite
+cmds:
+  - cmd: /mayhem/pdu_round_trip
+    libfuzzer: true
