@@ -1,0 +1,13 @@
+project: savantenvs/ironrdp
+target: cliprdr_format-mined-def44ec
+# seed-from: https://app.mayhem.security/savantenvs/ironrdp/cliprdr_format
+# Mining BASE def44ec (before upstream cf4c9ea, "panic when calling .abs() on i32::MIN"): the
+# clipboard format conversion target. BitmapInfoHeader::decode_with_size (crates/ironrdp-cliprdr-format/
+# src/bitmap.rs) takes `width.abs()` of an unchecked i32, so a CF_DIB/CF_DIBV5 header with
+# biWidth = i32::MIN panics (overflow) under dib_to_png / dibv5_to_png.
+testsuite:
+  - https://$MAYHEM_DOMAIN/$MAYHEM_PROJECT/$MAYHEM_TARGET/testsuite.tar
+  - file://mayhem/cliprdr_format-mined-def44ec/testsuite
+cmds:
+  - cmd: /mayhem/cliprdr_format
+    libfuzzer: true
